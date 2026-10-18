@@ -1,0 +1,227 @@
+﻿<UserControl x:Class="SBTools.SBToolControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="550"
+             d:DesignWidth="650"
+             Background="#1E1E1E"
+             FontFamily="Segoe UI"
+             FontSize="12">
+
+    <UserControl.Resources>
+
+        <!-- COMBOBOX DARK THEME -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#3F3F46"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="Border"
+                                    Background="#1E1E1E"
+                                    BorderBrush="#3F3F46"
+                                    BorderThickness="1"
+                                    CornerRadius="2">
+                                <Grid>
+                                    <ContentPresenter Margin="7,0,32,0"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Left"
+                                                      Content="{TemplateBinding SelectionBoxItem}"
+                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                      TextElement.Foreground="#FFFFFF"/>
+
+                                    <ToggleButton x:Name="ToggleButton"
+                                                  Width="28"
+                                                  HorizontalAlignment="Right"
+                                                  Background="#1E1E1E"
+                                                  BorderThickness="0"
+                                                  Focusable="False"
+                                                  IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Path Data="M 0 0 L 8 0 L 4 5 Z"
+                                              Fill="#CCCCCC"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                    </ToggleButton>
+                                </Grid>
+                            </Border>
+
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   PopupAnimation="Fade">
+                                <Border Background="#1E1E1E"
+                                        BorderBrush="#3F3F46"
+                                        BorderThickness="1">
+                                    <ScrollViewer MaxHeight="250" VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#007ACC"/>
+                            </Trigger>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#007ACC"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- COMBOBOX ITEM -->
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#333333"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#264F78"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- LISTBOX ITEM -->
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Padding" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#333333"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#264F78"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- MAIN LAYOUT -->
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- TOP: CATEGORY -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Center">
+            <TextBlock Text="Category:" VerticalAlignment="Center" Width="70" FontWeight="SemiBold" Foreground="#CCCCCC"/>
+            <ComboBox x:Name="CbCategory" Width="220" Height="28" SelectionChanged="CbCategory_SelectionChanged"/>
+            <TextBlock x:Name="TxtTotal" Text="Total: 0 Commands" VerticalAlignment="Center" Margin="15,0,0,0" Foreground="#858585" FontStyle="Italic"/>
+        </StackPanel>
+
+        <!-- CENTER -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- COMMAND LIST -->
+            <GroupBox Grid.Column="0" Header="Commands" Margin="0,0,6,0" Padding="6" FontWeight="SemiBold" Foreground="#F14C4C">
+                <ListBox x:Name="LbCommands" SelectionChanged="LbCommands_SelectionChanged" BorderBrush="#3F3F46" Background="#252526">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" Padding="4,3" Foreground="#E0E0E0" FontWeight="Normal"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+
+            <!-- DESCRIPTION & VIDEO PANEL -->
+            <GroupBox Grid.Column="1" Header="Description &amp; Guide Video" Margin="6,0,0,0" Padding="8" FontWeight="SemiBold" Foreground="#F14C4C">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Text Information -->
+                    <StackPanel Grid.Row="0">
+                        <TextBlock x:Name="TxtTitle" Text="Command Title" FontWeight="Bold" FontSize="14" Foreground="#4EC9B0" Margin="0,0,0,6"/>
+                        <Separator Margin="0,0,0,8" Background="#3F3F46"/>
+                        <TextBlock x:Name="TxtDesc1" Text="Description line 1..." TextWrapping="Wrap" Margin="0,0,0,3" Foreground="#D4D4D4" FontWeight="Normal"/>
+                        <TextBlock x:Name="TxtDesc2" Text="Description line 2..." TextWrapping="Wrap" Margin="0,0,0,3" Foreground="#D4D4D4" FontWeight="Normal"/>
+                        <TextBlock x:Name="TxtDesc3" Text="Description line 3..." TextWrapping="Wrap" Margin="0,0,0,8" Foreground="#9CDCFE" FontWeight="Normal"/>
+
+                        <Grid Margin="0,2,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Orientation="Horizontal" Margin="0,2">
+                                    <TextBlock Text="Shortcut: " FontWeight="SemiBold" Width="70" Foreground="#858585"/>
+                                    <TextBlock x:Name="TxtShortcut" Text="SB_CMD" Foreground="#CE9178" FontWeight="Bold"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,2">
+                                    <TextBlock Text="Category: " FontWeight="SemiBold" Width="70" Foreground="#858585"/>
+                                    <TextBlock x:Name="TxtCatDetail" Text="General" Foreground="#4EC9B0" FontWeight="Normal"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- NÚT BẤM WATCH VIDEO -->
+                            <Button x:Name="BtnWatchVideo" Grid.Column="1" Content="▶ Watch Video" Width="105" Height="28" 
+                                    Click="BtnWatchVideo_Click" Background="#238636" Foreground="White" 
+                                    FontWeight="SemiBold" BorderBrush="#2EA043" Cursor="Hand" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Video Player Container -->
+                    <Border Grid.Row="1" BorderBrush="#3F3F46" BorderThickness="1" Background="Black" CornerRadius="4" Margin="0,4,0,0"
+                            Cursor="Hand" MouseLeftButtonDown="CmdVideo_MouseLeftButtonDown" ToolTip="Nhấp đúp để phóng to video">
+                        <Grid>
+                            <MediaElement x:Name="CmdVideo" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Uniform" IsHitTestVisible="False"/>
+                            <TextBlock x:Name="TxtNoVideo" Text="No video available" Foreground="#777777" HorizontalAlignment="Center" VerticalAlignment="Center" FontStyle="Italic" Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!-- BOTTOM: BUTTONS -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button x:Name="BtnRun" Content="Run Command" Width="110" Height="32" Margin="0,0,8,0" Click="BtnRun_Click" Background="#007ACC" Foreground="White" FontWeight="SemiBold" BorderBrush="#007ACC" Cursor="Hand"/>
+            <Button x:Name="BtnClose" Content="Close" Width="85" Height="32" Click="BtnClose_Click" Background="#2D2D30" Foreground="#CCCCCC" BorderBrush="#3F3F46" Cursor="Hand"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -4,6 +4,7 @@ using System.Windows.Forms.Integration;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
+using AcadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace SBTools
 {
@@ -43,6 +44,17 @@ namespace SBTools
             {
                 _paletteSet.Visible = false;
             }
+        }
+
+        // ==========================================
+        // GỘP THÊM LỆNH MỞ HỘP THOẠI ABOUT / LICENSE
+        // ==========================================
+        [CommandMethod("ABOUTSBTOOLS")]
+        public void ShowAboutForm()
+        {
+            // Hiển thị hộp thoại About/License khi người dùng click vào nút About trên Ribbon
+            AboutForm form = new AboutForm();
+            AcadApp.ShowModalDialog(form);
         }
     }
 }

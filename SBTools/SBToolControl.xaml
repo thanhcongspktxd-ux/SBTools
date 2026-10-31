@@ -11,7 +11,6 @@
              FontSize="12">
 
     <UserControl.Resources>
-
         <!-- COMBOBOX DARK THEME -->
         <Style TargetType="ComboBox">
             <Setter Property="Background" Value="#1E1E1E"/>
@@ -66,7 +65,6 @@
                                 </Border>
                             </Popup>
                         </Grid>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Border" Property="BorderBrush" Value="#007ACC"/>
@@ -129,7 +127,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
     </UserControl.Resources>
 
     <!-- MAIN LAYOUT -->
@@ -154,15 +151,29 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- COMMAND LIST -->
+            <!-- COMMAND LIST & SEARCH BOX -->
             <GroupBox Grid.Column="0" Header="Commands" Margin="0,0,6,0" Padding="6" FontWeight="SemiBold" Foreground="#F14C4C">
-                <ListBox x:Name="LbCommands" SelectionChanged="LbCommands_SelectionChanged" BorderBrush="#3F3F46" Background="#252526">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" Padding="4,3" Foreground="#E0E0E0" FontWeight="Normal"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Ô TÌM KIẾM NHANH (SEARCH BOX) -->
+                    <TextBox x:Name="TxtSearch" Grid.Row="0" Height="26" Margin="0,0,0,6" Padding="4,2"
+                             Background="#2D2D30" Foreground="White" BorderBrush="#3F3F46" BorderThickness="1"
+                             TextChanged="TxtSearch_TextChanged" VerticalContentAlignment="Center"
+                             ToolTip="Gõ tên lệnh hoặc phím tắt (VD: ET, EB)..."/>
+
+                    <!-- DANH SÁCH LỆNH -->
+                    <ListBox x:Name="LbCommands" Grid.Row="1" SelectionChanged="LbCommands_SelectionChanged" BorderBrush="#3F3F46" Background="#252526">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Padding="4,3" Foreground="#E0E0E0" FontWeight="Normal"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </GroupBox>
 
             <!-- DESCRIPTION & VIDEO PANEL -->

@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="SBTools/SBTools.csproj" Id="f159e953-ad91-48ba-8e00-bccc4cd45b4d" />
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="SBTools/SBTools.csproj" Id="f159e953-ad91-48ba-8e00-bccc4cd45b4d">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
 </Solution>
